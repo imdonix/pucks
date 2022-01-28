@@ -6,6 +6,7 @@ public enum GameState { Start, Player1Turn, Player2Turn, End }
 
 public class Manager : MonoSingleton<Manager>
 {
+    // World has a 1x1 size
     [SerializeField] private Player player1, player2;
 
     #region Properties
@@ -34,7 +35,7 @@ public class Manager : MonoSingleton<Manager>
             player2.StartTurn();
             State = GameState.Player2Turn;
         }
-
+        
         else if (State == GameState.Player2Turn)
         {
             player2.EndTurn();
