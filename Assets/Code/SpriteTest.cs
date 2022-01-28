@@ -21,7 +21,11 @@ namespace Assets.Code
             start += Time.deltaTime / 5;
             render.sprite = map.GetSprite();
             map.Pain(new Vector2(0, start), 15, 1);
-               
+            for (int i = 0; i < 6; i++)
+            {
+                map.CheckConnected(new Vector2(0, -.8F), 1);
+            }
+            
         }
 
     }
