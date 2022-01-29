@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Map
 {
-    private const int SCALE = 10;
-    private const int SIZE = 100;
+    public const int SCALE = 10;
+    public const int SIZE = 100;
     private int[] map;
 
     private Color undefined = Color.green;

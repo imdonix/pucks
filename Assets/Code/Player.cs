@@ -85,6 +85,18 @@ public class Player
             if (!res.connected)
             {
                 map.Pain(res.area, type == 1 ? 0 : 1);
+                foreach (Vector2Int grid in res.area)
+                {
+                    if (grid.x % 3 == 0 || grid.y % 3 == 0)
+                    {
+                        Takeover over = PPool.Instance.Spawn<Takeover>();
+                        over.transform.position = new Vector2(
+                            (grid.x - Map.SIZE / 2) / 5,
+                            (grid.y - Map.SIZE / 2) / 5);
+                        over.SetColor(map.GetColor(type));
+                    }
+                }
+
                 dead.Add(item);
             }
         }
