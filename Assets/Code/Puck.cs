@@ -1,7 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(SpriteRenderer))]
 public class Puck : MonoBehaviour
 {
     private enum TurnPhase { Start, Directing, Powering, Shooting, End }
@@ -12,22 +15,34 @@ public class Puck : MonoBehaviour
     private bool isSelected = false;
 
     private new Rigidbody2D rigidbody;
+    private SpriteRenderer rendered;
 
     private TurnPhase turnPhase = TurnPhase.Start;
-
-    private Player owner;
+    private float radius;
+    private bool queen;
 
     #region Properties
 
-    public float Radius { get; private set; }
+
 
     #endregion
 
     private void Awake()
     {
         Select();
-        Radius = GetComponent<CircleCollider2D>().radius;
+        radius = GetComponent<CircleCollider2D>().radius;
         rigidbody = GetComponent<Rigidbody2D>();
+        rendered = GetComponent<SpriteRenderer>();
+    }
+
+    public Vector2 GetPosition()
+    {
+        return new Vector2(transform.position.x, transform.position.y);
+    }
+
+    public float GetSize()
+    {
+        return radius;
     }
 
     private void Update()
@@ -45,6 +60,12 @@ public class Puck : MonoBehaviour
         isSelected = true;
         turnPhase = TurnPhase.Start;
         selectorCircle.SetActive(true);
+    }
+
+    public void Set(Player player, bool queen)
+    {
+        rendered.color = Manager.Instance.GetMap().GetColor(player.Type());
+        this.queen = queen;
     }
 
     #endregion
