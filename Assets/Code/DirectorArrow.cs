@@ -13,14 +13,7 @@ public class DirectorArrow : MonoBehaviour
     private float maximumSize = 1;
     private float time = 0;
 
-    private Vector3 originalSize;
-
     public float CurrentPower = 2;
-
-    private void Start()
-    {
-        originalSize = transform.localScale;
-    }
 
     private void Update()
     {
@@ -34,8 +27,6 @@ public class DirectorArrow : MonoBehaviour
             CurrentPower = sinValue * 2;
 
             transform.localScale = Vector3.one * sinValue;
-
-
         }
 
     }
