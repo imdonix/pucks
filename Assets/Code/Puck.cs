@@ -52,9 +52,6 @@ public class Puck : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.Space))
             MoveToNextPhase();
 
-        if (turnPhase == TurnPhase.Shooting)
-            directorArrow.HoldRotation();
-
         if (rigidbody.velocity.magnitude < 0.1f)
             rigidbody.velocity = Vector2.zero;
     }
@@ -112,6 +109,7 @@ public class Puck : MonoBehaviour
     private void Shoot()
     {
         directorArrow.StopPowering();
+        directorArrow.HoldRotation();
         directorArrow.gameObject.SetActive(false);
         turnPhase = TurnPhase.Shooting;
         rigidbody.AddForce(transform.up * directorArrow.CurrentPower, ForceMode2D.Impulse);

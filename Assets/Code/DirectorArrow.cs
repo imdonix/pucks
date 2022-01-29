@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class DirectorArrow : MonoBehaviour
 {
+    [SerializeField] private Transform graphicTransform;
+
     private bool rotate = false;
     private bool power = false;
     private bool ascend = false;
@@ -29,7 +31,7 @@ public class DirectorArrow : MonoBehaviour
             float sinValue = (Mathf.Sin(time) + 2) / 2;
             CurrentPower = sinValue * 4;
 
-            transform.localScale = Vector3.one * sinValue;
+            graphicTransform.localScale = Vector3.one * sinValue;
         }
 
         if (holdRotation)
@@ -43,6 +45,7 @@ public class DirectorArrow : MonoBehaviour
         power = false;
         ascend = false;
         holdRotation = false;
+        graphicTransform.localScale = Vector3.one;
     }
 
     public void HoldRotation()
@@ -61,6 +64,7 @@ public class DirectorArrow : MonoBehaviour
     public void StopRotating()
     {
         rotate = false;
+        HoldRotation();
     }
 
     public void StartPowering()
