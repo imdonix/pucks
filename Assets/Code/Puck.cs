@@ -55,9 +55,6 @@ public class Puck : MonoBehaviour
     {
         if (!isSelected) return;
 
-        if(Input.GetKeyDown(KeyCode.Space))
-            MoveToNextPhase();
-
         if (rigidbody.velocity.magnitude < 0.1f)
             rigidbody.velocity = Vector2.zero;
     }
@@ -140,7 +137,7 @@ public class Puck : MonoBehaviour
         Manager.Instance.StartNextTurn();
     }
 
-    private void MoveToNextPhase()
+    public void MoveToNextPhase()
     {
         switch (turnPhase)
         {

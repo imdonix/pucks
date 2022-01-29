@@ -60,23 +60,42 @@ public class Manager : MonoSingleton<Manager>
         }
 
 
-        if (State == GameState.Player1Turn || State == GameState.Player2Turn)
+        if (State == GameState.Player1Turn)
+        {
+            if (Input.GetKeyDown(KeyCode.LeftAlt))
+            {
+                player1.SelectPuck(false);
+            }
+
+            if (Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                player1.SelectPuck(true);
+            }
+
+            if (Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                player1.GetSelected().MoveToNextPhase();
+            }
+        }
+
+        if (State == GameState.Player2Turn)
         {
             if (Input.GetKeyDown(KeyCode.A))
             {
-                if (State == GameState.Player1Turn) player1.SelectPuck(false);
-
-                else player2.SelectPuck(false);
+                player2.SelectPuck(false);
             }
 
             if (Input.GetKeyDown(KeyCode.D))
             {
-                if (State == GameState.Player1Turn) player1.SelectPuck(true);
+                player2.SelectPuck(true);
+            }
 
-                else player2.SelectPuck(true);
+            if (Input.GetKeyDown(KeyCode.W))
+            {
+                player2.GetSelected().MoveToNextPhase();
             }
         }
-        
+
         //Effects
         lightRenderer.rotation = Quaternion.Euler(0, Mathf.Sin(time) * 20, 0);
     }
@@ -109,12 +128,13 @@ public class Manager : MonoSingleton<Manager>
 
         for (int i = 0; i < UnityEngine.Random.Range(2,5); i++)
         {
-
-            Puck obsticle = GameObject.Instantiate(PuckPref);
             float x = UnityEngine.Random.Range(-8, 8F);
             float y = UnityEngine.Random.Range(-3, 3F);
+            Vector2 pos = new Vector2(x, y);
 
-            obsticle.transform.position = new Vector2(x, y);
+
+            Puck obsticle = GameObject.Instantiate(PuckPref);
+            obsticle.transform.position = pos;
             obsticle.transform.localScale = Vector3.one * 2;
             obsticle.Obsticle(4);
 

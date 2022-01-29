@@ -59,19 +59,24 @@ public class Player
     {
         if (!canSelectPuck) return;
 
-        pucks[selectedPuckIndex].Deselect();
+        pucks[selectedPuckIndex % pucks.Count].Deselect();
 
         if (next)
         {
             selectedPuckIndex = selectedPuckIndex == pucks.Count - 1 ? 0 : ++selectedPuckIndex;
-            pucks[selectedPuckIndex].Select();
+            pucks[selectedPuckIndex % pucks.Count].Select();
         }
 
         else
         {
             selectedPuckIndex = selectedPuckIndex == 0 ? pucks.Count - 1 : --selectedPuckIndex;
-            pucks[selectedPuckIndex].Select();
+            pucks[selectedPuckIndex % pucks.Count].Select();
         }
+    }
+
+    public Puck GetSelected()
+    {
+        return pucks[selectedPuckIndex % pucks.Count];
     }
 
 
@@ -119,7 +124,6 @@ public class Player
                 return true;
             }
         }
-
         return false;
     }
 
@@ -127,8 +131,6 @@ public class Player
     {
         return pucks;
     }
-
-
     public int Type()
     {
         return type;

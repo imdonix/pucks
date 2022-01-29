@@ -19,9 +19,12 @@ public abstract class Effect : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         Puck puck = collision.gameObject.GetComponent<Puck>();
-        if (puck)
+        if (!ReferenceEquals(null, puck))
         {
-            Play(puck.GetPlayer().Type());
+            if (!ReferenceEquals(null, puck.GetPlayer()))
+            {
+                Play(puck.GetPlayer().Type());
+            }
         }
         
         Destroy(gameObject);
@@ -37,7 +40,6 @@ public abstract class Effect : MonoBehaviour
 
     public void ParticleCall(HashSet<Vector2Int> effected, int type)
     {
-
         foreach (Vector2Int grid in effected)
         {
             if (grid.x % 5 == 0 || grid.y % 5 == 0)
