@@ -6,7 +6,9 @@ namespace Assets.Code
     public class SpriteTest : MonoBehaviour
     {
 
-        private float start = -1.25F;
+        public Vector2 point = Vector2.zero;
+        public float radius = 5;
+        public int type = 1;
         public SpriteRenderer render;
         private Map map;
 
@@ -18,9 +20,8 @@ namespace Assets.Code
 
         private void Update()
         {
-            start += Time.deltaTime / 5;
             render.sprite = map.GetSprite();
-            map.Pain(new Vector2(0, start), 15, 1);
+            map.Pain(point, radius, type);
             for (int i = 0; i < 6; i++)
             {
                 map.CheckConnected(new Vector2(0, .1F), 0);

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Map
 {
+    private const int SCALE = 10;
     private const int SIZE = 100;
     private int[] map;
 
@@ -79,9 +80,9 @@ public class Map
 
     public void Pain(Vector2 pos, float size, int type)
     {
-        Vector2 real = (pos + Vector2.one) / 2;
-        Vector2Int grid = new Vector2Int(Mathf.CeilToInt(real.x * SIZE), Mathf.CeilToInt(real.y * SIZE));
-        int rounded = Mathf.CeilToInt(size);
+        Vector2 real = (pos / SCALE + Vector2.one) / 2;
+        Vector2Int grid = new Vector2Int(Mathf.RoundToInt(real.x * SIZE), Mathf.RoundToInt(real.y * SIZE));
+        int rounded = Mathf.RoundToInt(size);
 
         for (int x = -rounded; x < rounded; x++)
         {
@@ -100,28 +101,10 @@ public class Map
         }
     }
 
-    public Sprite GetSprite()
-    {
-        Texture2D texture = new Texture2D(SIZE, SIZE);
-        for (int y = 0; y < SIZE; y++)
-        {
-            for (int x = 0; x < SIZE; x++)
-            {
-                texture.SetPixel(x, y, GetColor(map[y * SIZE + x]));
-            }
-        }
-
-        texture.filterMode = FilterMode.Point;
-        texture.wrapMode = TextureWrapMode.Clamp;
-        texture.Apply();
-        
-        return Sprite.Create(texture, new Rect(0,0,SIZE,SIZE), Vector2.one / 2);
-    }
-
     public CheckResoult CheckConnected(Vector2 pos, int type)
     {
-        Vector2 real = (pos + Vector2.one) / 2;
-        Vector2Int grid = new Vector2Int(Mathf.CeilToInt(real.x * SIZE), Mathf.CeilToInt(real.y * SIZE));
+        Vector2 real = (pos / SCALE + Vector2.one) / 2;
+        Vector2Int grid = new Vector2Int(Mathf.RoundToInt(real.x * SIZE), Mathf.RoundToInt(real.y * SIZE));
 
         HashSet<Vector2Int> visited = new HashSet<Vector2Int>();
         Queue<Vector2Int> queue = new Queue<Vector2Int>();
@@ -154,5 +137,23 @@ public class Map
         }
 
         return new CheckResoult(false, visited);
+    }
+
+    public Sprite GetSprite()
+    {
+        Texture2D texture = new Texture2D(SIZE, SIZE);
+        for (int y = 0; y < SIZE; y++)
+        {
+            for (int x = 0; x < SIZE; x++)
+            {
+                texture.SetPixel(x, y, GetColor(map[y * SIZE + x]));
+            }
+        }
+
+        texture.filterMode = FilterMode.Trilinear;
+        texture.wrapMode = TextureWrapMode.Clamp;
+        texture.Apply();
+
+        return Sprite.Create(texture, new Rect(0, 0, SIZE, SIZE), Vector2.one / 2);
     }
 }
