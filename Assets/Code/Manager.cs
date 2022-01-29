@@ -2,8 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public enum GameState { Start, Player1Turn, Player2Turn, End }
+public enum GameState { Player1Turn, Player2Turn, Idle, End }
 
 public class Manager : MonoSingleton<Manager>
 {
@@ -20,16 +21,10 @@ public class Manager : MonoSingleton<Manager>
     // World has a 1x1 size
     private Player player1;
     private Player player2;
-
     private Map map;
-
     private float time;
+    private GameState state;
 
-    #region Properties
-
-    public GameState State { get; private set; } = GameState.Start;
-
-    #endregion
 
     #region UNITY
 
@@ -54,22 +49,17 @@ public class Manager : MonoSingleton<Manager>
         CheckGameEnd();
 
         //Select
-        foreach (Puck item in player2.GetPucks())
-        {
-            map.Pain(item.GetPosition(), item.GetSize(), 1);
-        }
 
-
-        if (State == GameState.Player1Turn)
+        if (state == GameState.Player1Turn)
         {
-            if (Input.GetKeyDown(KeyCode.LeftAlt))
+            if (Input.GetKeyDown(KeyCode.LeftArrow))
             {
-                player1.SelectPuck(false);
+                player1.SelectPuck(-1);
             }
 
             if (Input.GetKeyDown(KeyCode.RightArrow))
             {
-                player1.SelectPuck(true);
+                player1.SelectPuck(1);
             }
 
             if (Input.GetKeyDown(KeyCode.UpArrow))
@@ -78,16 +68,16 @@ public class Manager : MonoSingleton<Manager>
             }
         }
 
-        if (State == GameState.Player2Turn)
+        if (state == GameState.Player2Turn)
         {
             if (Input.GetKeyDown(KeyCode.A))
             {
-                player2.SelectPuck(false);
+                player2.SelectPuck(-1);
             }
 
             if (Input.GetKeyDown(KeyCode.D))
             {
-                player2.SelectPuck(true);
+                player2.SelectPuck(1);
             }
 
             if (Input.GetKeyDown(KeyCode.W))
@@ -107,13 +97,13 @@ public class Manager : MonoSingleton<Manager>
         if (!player1.IsAlive())
         {
             Debug.Log("Player 2 win");
-            State = GameState.End;
+            state = GameState.End;
         }
 
         else if (!player2.IsAlive())
         {
             Debug.Log("Player 1 win");
-            State = GameState.End;
+            state = GameState.End;
         }
     }
 
@@ -156,7 +146,8 @@ public class Manager : MonoSingleton<Manager>
 
         }
 
-        StartNextTurn();
+        state = GameState.Player1Turn;
+        player1.SelectPuck(0);
     }
 
     private Tuple<Color, Color, Color> RandomColors()
@@ -185,27 +176,38 @@ public class Manager : MonoSingleton<Manager>
         return map;
     }
 
+    public GameState GetState()
+    {
+        return state;
+    }
+
+    public GameState Idle()
+    {
+        GameState tmp = state;
+        state = GameState.Idle;
+        return tmp;
+    }
+
+    public void SetState(GameState state)
+    {
+        this.state = state;
+    }
+
     public void StartNextTurn()
     {
-        if (State == GameState.Start)
+        if (state == GameState.Player1Turn)
         {
-            player1.StartTurn();
-            State = GameState.Player1Turn;
-            return;
+            state = GameState.Player2Turn;
+            player2.SelectPuck(0);
         }
-
-        if (State == GameState.Player1Turn)
+        else if (state == GameState.Player2Turn)
         {
-            player1.EndTurn();
-            player2.StartTurn();
-            State = GameState.Player2Turn;
+            state = GameState.Player1Turn;
+            player1.SelectPuck(0);
         }
-        
-        else if (State == GameState.Player2Turn)
+        else if (state == GameState.End)
         {
-            player2.EndTurn();
-            player1.StartTurn();
-            State = GameState.Player1Turn;
+            SceneManager.LoadScene("Menu");
         }
     }
 }

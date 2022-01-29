@@ -71,7 +71,9 @@ public class Puck : MonoBehaviour
     public void Deselect()
     {
         isSelected = false;
+        turnPhase = TurnPhase.Start;
         selectorCircle.SetActive(false);
+        directorArrow.gameObject.SetActive(false);
         directorArrow.ResetArrow();
     }
 
@@ -133,7 +135,9 @@ public class Puck : MonoBehaviour
 
     private IEnumerator StartDelay()
     {
+        GameState state = Manager.Instance.Idle();
         yield return new WaitForSeconds(3);
+        Manager.Instance.SetState(state);
         Manager.Instance.StartNextTurn();
     }
 
@@ -142,8 +146,7 @@ public class Puck : MonoBehaviour
         switch (turnPhase)
         {
             case TurnPhase.Start:
-                StartDirecting();
-                owner.CanSelectPuck = false;
+                StartDirecting();   
                 break;
 
             case TurnPhase.Directing:
