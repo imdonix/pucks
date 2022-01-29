@@ -85,9 +85,16 @@ public class Manager : MonoSingleton<Manager>
     private void CheckGameEnd()
     {
         if (!player1.IsAlive())
+        {
             Debug.Log("Player 2 win");
+            State = GameState.End;
+        }
+
         else if (!player2.IsAlive())
+        {
             Debug.Log("Player 1 win");
+            State = GameState.End;
+        }
     }
 
     private void GameStart()

@@ -114,7 +114,7 @@ public class Puck : MonoBehaviour
         directorArrow.HoldRotation();
         directorArrow.gameObject.SetActive(false);
         turnPhase = TurnPhase.Shooting;
-        rigidbody.AddForce(transform.up * directorArrow.CurrentPower, ForceMode2D.Impulse);
+        rigidbody.AddForce(directorArrow.transform.up * directorArrow.CurrentPower, ForceMode2D.Impulse);
         StartCoroutine(StartDelay());
     }
 
