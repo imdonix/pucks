@@ -89,6 +89,11 @@ public class Puck : MonoBehaviour
         directorArrow.StartPowering();
     }
 
+    public bool IsQueen()
+    {
+        return queen;
+    }
+
     private void Shoot()
     {
         directorArrow.StopPowering();
