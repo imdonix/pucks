@@ -45,17 +45,6 @@ public class Map
         }
     }
 
-    private Color GetColor(int s)
-    {
-        switch (s)
-        {
-            case 0: return top;
-            case 1: return bottom;
-        }
-
-        return undefined;
-    }
-
     private int Direction(int type)
     {
         return type == 0 ? 1 : -1;
@@ -76,6 +65,17 @@ public class Map
         bool zero = pos.x < 0 || pos.y < 0;
         bool top = pos.x >= SIZE || pos.y >= SIZE;
         return zero || top;
+    }
+
+    public Color GetColor(int s)
+    {
+        switch (s)
+        {
+            case 0: return top;
+            case 1: return bottom;
+        }
+
+        return undefined;
     }
 
     public void Pain(Vector2 pos, float size, int type)
