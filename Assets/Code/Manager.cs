@@ -9,6 +9,7 @@ public class Manager : MonoSingleton<Manager>
 {
 
     [SerializeField] public Puck PuckPref;
+    [SerializeField] public Effect[] EffectPrefs;
 
     [SerializeField] private Transform lightRenderer;
     [SerializeField] private SpriteRenderer topRenderer;
@@ -118,6 +119,21 @@ public class Manager : MonoSingleton<Manager>
             obsticle.Obsticle(4);
 
             map.Pain(obsticle.GetPosition(), obsticle.GetSize(), 3);
+        }
+
+
+        for (int i = 0; i < UnityEngine.Random.Range(5, 8); i++)
+        {
+            Effect pref = EffectPrefs[UnityEngine.Random.Range(0, EffectPrefs.Length)];
+            Effect effect = GameObject.Instantiate(pref);
+
+            float x = UnityEngine.Random.Range(-9, 9F);
+            float y = UnityEngine.Random.Range(-5, 5F);
+
+            effect.transform.position = new Vector2(x, y);
+            effect.transform.localScale = Vector3.one * 2;
+            effect.Bind(map, TimeControl.Instance);
+
         }
 
         StartNextTurn();

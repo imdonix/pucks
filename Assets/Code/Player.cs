@@ -90,9 +90,10 @@ public class Player
                     if (grid.x % 5 == 0 || grid.y % 5 == 0)
                     {
                         Takeover over = PPool.Instance.Spawn<Takeover>();
-                        over.transform.position = new Vector2(
+                        over.transform.position = new Vector3(
                             (grid.x - Map.SIZE / 2) / 5,
-                            (grid.y - Map.SIZE / 2) / 5);
+                            (grid.y - Map.SIZE / 2) / 5,
+                            -1);
                         over.SetColor(map.GetColor(type));
                     }
                 }

@@ -46,6 +46,11 @@ public class Puck : MonoBehaviour
         return radius;
     }
 
+    public Player GetPlayer()
+    {
+        return owner;
+    }
+
     private void Update()
     {
         if (!isSelected) return;

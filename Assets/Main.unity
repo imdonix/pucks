@@ -553,6 +553,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PuckPref: {fileID: 3876311889281958750, guid: 3239a78b72e0c3945b2512e70a055d6d, type: 3}
+  EffectPrefs:
+  - {fileID: 4235991088450666116, guid: 31d44792831766c4e9625eedb5f5a00e, type: 3}
+  - {fileID: 3145312583228322199, guid: a1773de04f1d61243a389ff08fd6bace, type: 3}
+  - {fileID: 7355345106531332693, guid: f4eab18de04ce2e438c74e604de77cb5, type: 3}
+  - {fileID: 5253272874501190766, guid: fbadf867747136449a0c6c11640e0f70, type: 3}
   lightRenderer: {fileID: 1029273847}
   topRenderer: {fileID: 1670841226}
   botRenderer: {fileID: 280319978}

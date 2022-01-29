@@ -6,6 +6,7 @@ public class Map
 {
     public const int SCALE = 10;
     public const int SIZE = 100;
+
     private int[] map;
 
     private Color undefined = Color.green;
@@ -102,6 +103,46 @@ public class Map
                 }
             }
         }
+    }
+
+    public HashSet<Vector2Int> PainLine(Vector2 pos, int type, int brush, bool horizontal)
+    {
+        Vector2 real = (pos / SCALE + Vector2.one) / 2;
+        Vector2Int grid = new Vector2Int(Mathf.RoundToInt(real.x * SIZE), Mathf.RoundToInt(real.y * SIZE));
+        HashSet<Vector2Int> painted = new HashSet<Vector2Int>();
+
+        if (horizontal)
+        {
+            for (int y = 0; y < brush; y++)
+            {
+                for (int x = 0; x < SIZE; x++)
+                {
+                    Vector2Int painter = new Vector2Int(x, y + grid.y);
+                    if (!OutOfIndex(painter))
+                    {
+                        map[painter.y * SIZE + painter.x] = type;
+                        painted.Add(painter);
+                    }
+                }
+            }
+        }
+        else
+        {
+            for (int y = 0; y < SIZE; y++)
+            {
+                for (int x = 0; x < brush; x++)
+                {
+                    Vector2Int painter = new Vector2Int(x + grid.x, y);
+                    if (!OutOfIndex(painter))
+                    {
+                        map[painter.y * SIZE + painter.x] = type;
+                        painted.Add(painter);
+                    }
+                }
+            }
+        }
+
+        return painted;
     }
 
     public void Pain(HashSet<Vector2Int> all, int type)
