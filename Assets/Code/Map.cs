@@ -8,11 +8,8 @@ public class Map
     private int[] map;
 
     private Color undefined = Color.green;
-
     private Color top;
     private Color bottom;
-
-    private HashSet<Vector2Int> hash;
 
     public Map(Color top, Color bottom)
     {
@@ -114,14 +111,6 @@ public class Map
             }
         }
 
-        if (!ReferenceEquals(null, hash))
-        {
-            foreach (var item in hash)
-            {
-                texture.SetPixel(item.x, item.y, Color.red);
-            }
-        }
-
         texture.filterMode = FilterMode.Point;
         texture.wrapMode = TextureWrapMode.Clamp;
         texture.Apply();
@@ -129,13 +118,12 @@ public class Map
         return Sprite.Create(texture, new Rect(0,0,SIZE,SIZE), Vector2.one / 2);
     }
 
-    public bool CheckConnected(Vector2 pos, int type)
+    public CheckResoult CheckConnected(Vector2 pos, int type)
     {
         Vector2 real = (pos + Vector2.one) / 2;
         Vector2Int grid = new Vector2Int(Mathf.CeilToInt(real.x * SIZE), Mathf.CeilToInt(real.y * SIZE));
 
         HashSet<Vector2Int> visited = new HashSet<Vector2Int>();
-        hash = visited;
         Queue<Vector2Int> queue = new Queue<Vector2Int>();
 
         queue.Enqueue(grid);
@@ -145,11 +133,11 @@ public class Map
  
             if (Direction(type) > 0 && curr.y >= SIZE)
             {
-                return true;
+                return new CheckResoult(true, visited);
             }
             else if (Direction(type) < 0 && curr.y < 0)
             {
-                return true;
+                return new CheckResoult(true, visited);
             }
 
             if (Get(curr) == type)
@@ -165,7 +153,6 @@ public class Map
             }
         }
 
-        return false;
-
+        return new CheckResoult(false, visited);
     }
 }
