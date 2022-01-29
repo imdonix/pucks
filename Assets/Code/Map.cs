@@ -11,16 +11,17 @@ public class Map
     private Color undefined = Color.green;
     private Color top;
     private Color bottom;
+    private Color obsticle;
 
-    public Map(Color top, Color bottom)
+    public Map(Color top, Color bottom, Color obsticle)
     {
         this.map = new int[SIZE * SIZE];
 
         this.top = top;
         this.bottom = bottom;
+        this.obsticle = obsticle;
 
         Init();
-        //Randomize();
     }
 
     private void Init()
@@ -34,6 +35,7 @@ public class Map
         }
     }
 
+    
     private void Randomize()
     {
         for (int y = 0; y < SIZE; y++)
@@ -73,6 +75,7 @@ public class Map
         {
             case 0: return top;
             case 1: return bottom;
+            case 2: return obsticle;
         }
 
         return undefined;

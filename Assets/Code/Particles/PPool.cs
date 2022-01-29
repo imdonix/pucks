@@ -18,7 +18,14 @@ public class PPool : MonoSingleton<PPool>
         foreach (var item in Resources.LoadAll<Particle>("Particles"))
         {
             parts.Add(item.GetType(), item);
-            pool.Add(item.GetType(), new Queue<Particle>());
+            Queue<Particle> queue = new Queue<Particle>();
+            pool.Add(item.GetType(), queue);
+            for (int i = 0; i < 25; i++)
+            {
+                Particle part = GameObject.Instantiate(item);
+                part.gameObject.SetActive(false);
+                queue.Enqueue(part);
+            }
         } 
     }
 

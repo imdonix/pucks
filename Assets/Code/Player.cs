@@ -21,7 +21,7 @@ public class Player
         this.type = type;
         this.pucks = new List<Puck>();
 
-        int y = type == 0 ? 5 : -5;
+        int y = type == 0 ? 7 : -7;
 
         Puck queen = GameObject.Instantiate(Manager.Instance.PuckPref);
         queen.transform.position = new Vector3(0, y, 0);
@@ -30,13 +30,13 @@ public class Player
         pucks.Add(queen);
 
         Puck one = GameObject.Instantiate(Manager.Instance.PuckPref);
-        one.transform.position = new Vector3(-5, y, 0);
+        one.transform.position = new Vector3(-7, y, 0);
         one.transform.localScale = Vector3.one * 2;
         one.Set(this, false, 5);
         pucks.Add(one);
 
         Puck two = GameObject.Instantiate(Manager.Instance.PuckPref);
-        two.transform.position = new Vector3(5, y, 0);
+        two.transform.position = new Vector3(7, y, 0);
         two.transform.localScale = Vector3.one * 2;
         two.Set(this, false, 5);
         
@@ -93,9 +93,10 @@ public class Player
                         over.transform.position = new Vector2(
                             (grid.x - Map.SIZE / 2) / 5,
                             (grid.y - Map.SIZE / 2) / 5);
-                        over.SetColor(map.GetColor(type == 1 ? 0 : 1));
+                        over.SetColor(map.GetColor(type));
                     }
                 }
+                TimeControl.Instance.SetTimeFor(0.5F, 2);
 
                 dead.Add(item);
             }

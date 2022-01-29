@@ -8,12 +8,9 @@ public class DirectorArrow : MonoBehaviour
 
     private bool rotate = false;
     private bool power = false;
-    private bool ascend = false;
     private bool holdRotation = false;
 
     private float rotationSpeed;
-    private float minimumSize = 0.5f;
-    private float maximumSize = 1;
     private float time = 0;
 
     private Quaternion rotationToHold;
@@ -43,8 +40,8 @@ public class DirectorArrow : MonoBehaviour
         transform.rotation = Quaternion.identity;
         rotate = false;
         power = false;
-        ascend = false;
         holdRotation = false;
+        time = 0;
         graphicTransform.localScale = Vector3.one;
     }
 

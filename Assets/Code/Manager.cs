@@ -99,17 +99,31 @@ public class Manager : MonoSingleton<Manager>
 
     private void GameStart()
     {
-        Tuple<Color, Color> colors = RandomColors();
+        Tuple<Color, Color, Color> colors = RandomColors();
         topRenderer.material.color = colors.Item1;
         botRenderer.material.color = colors.Item2;
-        map = new Map(colors.Item1, colors.Item2);
+        map = new Map(colors.Item1, colors.Item2, colors.Item3);
         player1 = new Player(map, 0);
         player2 = new Player(map, 1);
+
+        for (int i = 0; i < UnityEngine.Random.Range(2,5); i++)
+        {
+
+            Puck obsticle = GameObject.Instantiate(PuckPref);
+            float x = UnityEngine.Random.Range(-8, 8F);
+            float y = UnityEngine.Random.Range(-3, 3F);
+
+            obsticle.transform.position = new Vector2(x, y);
+            obsticle.transform.localScale = Vector3.one * 2;
+            obsticle.Obsticle(4);
+
+            map.Pain(obsticle.GetPosition(), obsticle.GetSize(), 3);
+        }
 
         StartNextTurn();
     }
 
-    private Tuple<Color, Color> RandomColors()
+    private Tuple<Color, Color, Color> RandomColors()
     {
 
         Color primary = new Color(
@@ -122,7 +136,12 @@ public class Manager : MonoSingleton<Manager>
             1 - primary.g,
             1 - primary.b,
             1);
-        return new Tuple<Color, Color>(primary, sec);
+        Color third = new Color(
+            .5F - primary.r,
+            .5F - primary.g,
+            .5F - primary.b,
+            1);
+        return new Tuple<Color, Color, Color>(primary, sec, third);
     }
 
     public Map GetMap()

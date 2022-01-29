@@ -75,11 +75,22 @@ public class Puck : MonoBehaviour
 
     public void Set(Player player, bool queen, int radius)
     {
-        owner = player;
-        rendered.color = Manager.Instance.GetMap().GetColor(player.Type());
+        this.owner = player;
+        this.rendered.color = Manager.Instance.GetMap().GetColor(player.Type());
         this.radius = radius;
         this.queen = queen;
         queenIcon.SetActive(queen);
+    }
+
+    public void Obsticle(float radius)
+    {
+        this.owner = null;
+        this.rendered.color = Manager.Instance.GetMap().GetColor(2);
+        this.radius = radius;
+        this.queen = false;
+        queenIcon.SetActive(false);
+        rigidbody.isKinematic = true;
+        
     }
 
     #endregion

@@ -432,7 +432,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   graphicTransform: {fileID: 3876311889580309741}
-  CurrentPower: 45
+  CurrentPower: 65
 --- !u!1 &5831556562901509328
 GameObject:
   m_ObjectHideFlags: 0
