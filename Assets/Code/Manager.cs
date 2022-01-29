@@ -9,6 +9,8 @@ public class Manager : MonoSingleton<Manager>
 
     [SerializeField] public Puck PuckPref;
 
+    private SpriteRenderer mapRender;
+
     // World has a 1x1 size
     private Player player1;
     private Player player2;
@@ -25,12 +27,15 @@ public class Manager : MonoSingleton<Manager>
 
     private void Start()
     {
+        mapRender = GetComponent<SpriteRenderer>();
         GameStart();
     }
 
     private void Update()
     {
         if (ReferenceEquals(map, null)) return;
+
+        mapRender.sprite = map.GetSprite();
 
         foreach (Puck item in player1.GetPucks())
         {
@@ -47,9 +52,10 @@ public class Manager : MonoSingleton<Manager>
 
     private void GameStart()
     {
+        map = new Map(Color.black, Color.white);
         player1 = new Player(0);
         player2 = new Player(1);
-        map = new Map(Color.black, Color.white);
+        
 
         StartNextTurn();
     }

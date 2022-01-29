@@ -30,7 +30,6 @@ public class Puck : MonoBehaviour
     private void Awake()
     {
         Select();
-        radius = GetComponent<CircleCollider2D>().radius;
         rigidbody = GetComponent<Rigidbody2D>();
         rendered = GetComponent<SpriteRenderer>();
     }
@@ -62,9 +61,10 @@ public class Puck : MonoBehaviour
         selectorCircle.SetActive(true);
     }
 
-    public void Set(Player player, bool queen)
+    public void Set(Player player, bool queen, int radius)
     {
         rendered.color = Manager.Instance.GetMap().GetColor(player.Type());
+        this.radius = radius;
         this.queen = queen;
     }
 
