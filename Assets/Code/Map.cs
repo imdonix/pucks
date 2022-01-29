@@ -161,7 +161,7 @@ public class Map
             }
         }
 
-        texture.filterMode = FilterMode.Trilinear;
+        texture.filterMode = FilterMode.Point;
         texture.wrapMode = TextureWrapMode.Clamp;
         texture.Apply();
 

@@ -87,7 +87,7 @@ public class Player
                 map.Pain(res.area, type == 1 ? 0 : 1);
                 foreach (Vector2Int grid in res.area)
                 {
-                    if (grid.x % 3 == 0 || grid.y % 3 == 0)
+                    if (grid.x % 5 == 0 || grid.y % 5 == 0)
                     {
                         Takeover over = PPool.Instance.Spawn<Takeover>();
                         over.transform.position = new Vector2(

@@ -6,7 +6,7 @@ public class Takeover : Particle
 {
     public override float Alive()
     {
-        return 1.25F;
+        return 3F;
     }
 
     public void SetColor(Color color)
