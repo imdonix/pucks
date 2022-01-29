@@ -52,7 +52,7 @@ public class Manager : MonoSingleton<Manager>
 
     private void GameStart()
     {
-        map = new Map(Color.black, Color.white);
+        map = new Map(Color.blue, Color.red);
         player1 = new Player(0);
         player2 = new Player(1);
         
