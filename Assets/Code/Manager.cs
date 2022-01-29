@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +10,10 @@ public class Manager : MonoSingleton<Manager>
 
     [SerializeField] public Puck PuckPref;
 
+    [SerializeField] private Transform lightRenderer;
+    [SerializeField] private SpriteRenderer topRenderer;
+    [SerializeField] private SpriteRenderer botRenderer;
+
     private SpriteRenderer mapRender;
 
     // World has a 1x1 size
@@ -16,6 +21,8 @@ public class Manager : MonoSingleton<Manager>
     private Player player2;
 
     private Map map;
+
+    private float time;
 
     #region Properties
 
@@ -33,15 +40,17 @@ public class Manager : MonoSingleton<Manager>
 
     private void Update()
     {
+        time += Time.deltaTime;
+
         if (ReferenceEquals(map, null)) return;
-
+                
+        //Logic
         mapRender.sprite = map.GetSprite();
-
-        foreach (Puck item in player1.GetPucks())
-        {
-            map.Pain(item.GetPosition(), item.GetSize(), 0);
-        }
-
+        
+        player1.Draw();
+        player2.Draw(); 
+        
+        //Select
         foreach (Puck item in player2.GetPucks())
         {
             map.Pain(item.GetPosition(), item.GetSize(), 1);
@@ -64,18 +73,40 @@ public class Manager : MonoSingleton<Manager>
                 else player2.SelectPuck(true);
             }
         }
+        
+        //Effects
+        lightRenderer.rotation = Quaternion.Euler(0, Mathf.Sin(time) * 20, 0);
     }
 
     #endregion
 
     private void GameStart()
     {
-        map = new Map(Color.blue, Color.red);
-        player1 = new Player(0);
-        player2 = new Player(1);
+        Tuple<Color, Color> colors = RandomColors();
+        topRenderer.material.color = colors.Item1;
+        botRenderer.material.color = colors.Item2;
+        map = new Map(colors.Item1, colors.Item2);
+        player1 = new Player(map, 0);
+        player2 = new Player(map, 1);
         
 
         StartNextTurn();
+    }
+
+    private Tuple<Color, Color> RandomColors()
+    {
+
+        Color primary = new Color(
+            UnityEngine.Random.Range(0, 1F), 
+            UnityEngine.Random.Range(0, 1F), 
+            UnityEngine.Random.Range(0, 1F),
+            1);
+        Color sec = new Color(
+            1 - primary.r,
+            1 - primary.g,
+            1 - primary.b,
+            1);
+        return new Tuple<Color, Color>(primary, sec);
     }
 
     public Map GetMap()
