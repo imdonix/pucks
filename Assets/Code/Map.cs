@@ -101,6 +101,14 @@ public class Map
         }
     }
 
+    public void Pain(HashSet<Vector2Int> all, int type)
+    {
+        foreach (Vector2Int curr in all)
+        {
+            map[curr.y * SIZE + curr.x] = type;
+        }
+    }
+
     public CheckResoult CheckConnected(Vector2 pos, int type)
     {
         Vector2 real = (pos / SCALE + Vector2.one) / 2;
@@ -123,16 +131,19 @@ public class Map
                 return new CheckResoult(true, visited);
             }
 
-            if (Get(curr) == type)
+            if (!OutOfIndex(curr))
             {
-                if (!visited.Contains(curr))
+                if (Get(curr) == type)
                 {
-                    queue.Enqueue(curr + Vector2Int.up);
-                    queue.Enqueue(curr + Vector2Int.down);
-                    queue.Enqueue(curr + Vector2Int.left);
-                    queue.Enqueue(curr + Vector2Int.right);
+                    if (!visited.Contains(curr))
+                    {
+                        queue.Enqueue(curr + Vector2Int.up);
+                        queue.Enqueue(curr + Vector2Int.down);
+                        queue.Enqueue(curr + Vector2Int.left);
+                        queue.Enqueue(curr + Vector2Int.right);
+                    }
+                    visited.Add(curr);
                 }
-                visited.Add(curr);
             }
         }
 

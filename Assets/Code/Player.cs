@@ -6,14 +6,16 @@ public class Player
 {
     private int lastPuck = -1;
 
+    private Map map;
     private int type;
     private List<Puck> pucks;
     
 
     public float DirectionArrowSpeed { get; private set; } = 1;
 
-    public Player(int type)
+    public Player(Map map, int type)
     {
+        this.map = map;
         this.type = type;
         this.pucks = new List<Puck>();
 
@@ -49,10 +51,46 @@ public class Player
         
     }
 
+
+    public void Draw()
+    {
+        List<Puck> dead = new List<Puck>();
+        foreach (Puck item in GetPucks())
+        {
+            map.Pain(item.GetPosition(), item.GetSize(), type);
+            CheckResoult res = map.CheckConnected(item.GetPosition(), type);
+            if (!res.connected)
+            {
+                map.Pain(res.area, type == 1 ? 0 : 1);
+                dead.Add(item);
+            }
+        }
+
+        foreach (Puck item in dead)
+        {
+            GameObject.Destroy(item.gameObject);
+            pucks.Remove(item);
+        }
+    }
+
+    public bool IsAlive()
+    {
+        foreach (Puck puck in pucks)
+        {
+            if (puck.IsQueen())
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public List<Puck> GetPucks()
     {
         return pucks;
     }
+
 
     public int Type()
     {
