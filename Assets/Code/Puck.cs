@@ -92,7 +92,7 @@ public class Puck : MonoBehaviour
         turnPhase = TurnPhase.Directing;
         selectorCircle.SetActive(false);
         directorArrow.gameObject.SetActive(true);
-        directorArrow.Rotate(0.1f);
+        directorArrow.Rotate(90);
     }
 
     private void StartPowering()

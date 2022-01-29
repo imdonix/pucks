@@ -21,7 +21,7 @@ public class DirectorArrow : MonoBehaviour
     private void Update()
     {
         if (rotate)
-            transform.rotation *= Quaternion.Euler(0, 0, rotationSpeed);
+            transform.rotation *= Quaternion.Euler(0, 0, rotationSpeed * Time.deltaTime);
 
         if (power)
         {

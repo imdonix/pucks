@@ -48,8 +48,10 @@ public class Manager : MonoSingleton<Manager>
         mapRender.sprite = map.GetSprite();
         
         player1.Draw();
-        player2.Draw(); 
-        
+        player2.Draw();
+
+        CheckGameEnd();
+
         //Select
         foreach (Puck item in player2.GetPucks())
         {
@@ -80,6 +82,14 @@ public class Manager : MonoSingleton<Manager>
 
     #endregion
 
+    private void CheckGameEnd()
+    {
+        if (!player1.IsAlive())
+            Debug.Log("Player 2 win");
+        else if (!player2.IsAlive())
+            Debug.Log("Player 1 win");
+    }
+
     private void GameStart()
     {
         Tuple<Color, Color> colors = RandomColors();
@@ -88,7 +98,6 @@ public class Manager : MonoSingleton<Manager>
         map = new Map(colors.Item1, colors.Item2);
         player1 = new Player(map, 0);
         player2 = new Player(map, 1);
-        
 
         StartNextTurn();
     }
@@ -113,7 +122,6 @@ public class Manager : MonoSingleton<Manager>
     {
         return map;
     }
-
 
     public void StartNextTurn()
     {
