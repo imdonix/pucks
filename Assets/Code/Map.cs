@@ -114,7 +114,6 @@ public class Map
             }
         }
 
-        
         if (!ReferenceEquals(null, hash))
         {
             foreach (var item in hash)
@@ -127,7 +126,6 @@ public class Map
         texture.wrapMode = TextureWrapMode.Clamp;
         texture.Apply();
         
-
         return Sprite.Create(texture, new Rect(0,0,SIZE,SIZE), Vector2.one / 2);
     }
 
@@ -154,15 +152,17 @@ public class Map
                 return true;
             }
 
-            if (Get(curr) == type && !visited.Contains(curr))
+            if (Get(curr) == type)
             {
-                queue.Enqueue(curr + Vector2Int.up);
-                queue.Enqueue(curr + Vector2Int.down);
-                queue.Enqueue(curr + Vector2Int.left);
-                queue.Enqueue(curr + Vector2Int.right);
+                if (!visited.Contains(curr))
+                {
+                    queue.Enqueue(curr + Vector2Int.up);
+                    queue.Enqueue(curr + Vector2Int.down);
+                    queue.Enqueue(curr + Vector2Int.left);
+                    queue.Enqueue(curr + Vector2Int.right);
+                }
+                visited.Add(curr);
             }
-
-            visited.Add(curr);
         }
 
         return false;

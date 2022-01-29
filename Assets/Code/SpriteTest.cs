@@ -23,7 +23,7 @@ namespace Assets.Code
             map.Pain(new Vector2(0, start), 15, 1);
             for (int i = 0; i < 6; i++)
             {
-                map.CheckConnected(new Vector2(0, -.8F), 1);
+                map.CheckConnected(new Vector2(0, .1F), 0);
             }
             
         }
