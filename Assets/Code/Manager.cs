@@ -46,6 +46,24 @@ public class Manager : MonoSingleton<Manager>
         {
             map.Pain(item.GetPosition(), item.GetSize(), 1);
         }
+
+
+        if (State == GameState.Player1Turn || State == GameState.Player2Turn)
+        {
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                if (State == GameState.Player1Turn) player1.SelectPuck(false);
+
+                else player2.SelectPuck(false);
+            }
+
+            if (Input.GetKeyDown(KeyCode.D))
+            {
+                if (State == GameState.Player1Turn) player1.SelectPuck(true);
+
+                else player2.SelectPuck(true);
+            }
+        }
     }
 
     #endregion

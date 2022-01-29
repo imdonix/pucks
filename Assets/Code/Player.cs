@@ -4,13 +4,16 @@ using UnityEngine;
 
 public class Player
 {
-    private int lastPuck = -1;
+    private bool canSelectPuck = false;
+    private int selectedPuckIndex = 0;
 
     private int type;
     private List<Puck> pucks;
     
 
     public float DirectionArrowSpeed { get; private set; } = 1;
+
+    public bool CanSelectPuck { get => canSelectPuck; set => canSelectPuck = value; }
 
     public Player(int type)
     {
@@ -41,12 +44,33 @@ public class Player
 
     public void StartTurn()
     {
-        pucks[++lastPuck].Select();
+        pucks[0].Select();
+        canSelectPuck = true;
     }
 
     public void EndTurn()
     {
-        
+        pucks[selectedPuckIndex].Deselect();
+        canSelectPuck = false;
+    }
+
+    public void SelectPuck(bool next)
+    {
+        if (!canSelectPuck) return;
+
+        pucks[selectedPuckIndex].Deselect();
+
+        if (next)
+        {
+            selectedPuckIndex = selectedPuckIndex == pucks.Count - 1 ? 0 : ++selectedPuckIndex;
+            pucks[selectedPuckIndex].Select();
+        }
+
+        else
+        {
+            selectedPuckIndex = selectedPuckIndex == 0 ? pucks.Count - 1 : --selectedPuckIndex;
+            pucks[selectedPuckIndex].Select();
+        }
     }
 
     public List<Puck> GetPucks()

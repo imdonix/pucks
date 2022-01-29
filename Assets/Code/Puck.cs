@@ -21,6 +21,8 @@ public class Puck : MonoBehaviour
     private float radius;
     private bool queen;
 
+    private Player owner;
+
     #region Properties
 
 
@@ -29,7 +31,6 @@ public class Puck : MonoBehaviour
 
     private void Awake()
     {
-        Select();
         rigidbody = GetComponent<Rigidbody2D>();
         rendered = GetComponent<SpriteRenderer>();
     }
@@ -50,6 +51,12 @@ public class Puck : MonoBehaviour
 
         if(Input.GetKeyDown(KeyCode.Space))
             MoveToNextPhase();
+
+        if (turnPhase == TurnPhase.Shooting)
+            directorArrow.HoldRotation();
+
+        if (rigidbody.velocity.magnitude < 0.1f)
+            rigidbody.velocity = Vector2.zero;
     }
 
     #region Public methods
@@ -61,8 +68,16 @@ public class Puck : MonoBehaviour
         selectorCircle.SetActive(true);
     }
 
+    public void Deselect()
+    {
+        isSelected = false;
+        selectorCircle.SetActive(false);
+        directorArrow.ResetArrow();
+    }
+
     public void Set(Player player, bool queen, int radius)
     {
+        owner = player;
         rendered.color = Manager.Instance.GetMap().GetColor(player.Type());
         this.radius = radius;
         this.queen = queen;
@@ -95,6 +110,13 @@ public class Puck : MonoBehaviour
         directorArrow.gameObject.SetActive(false);
         turnPhase = TurnPhase.Shooting;
         rigidbody.AddForce(transform.up * directorArrow.CurrentPower, ForceMode2D.Impulse);
+        StartCoroutine(StartDelay());
+    }
+
+    private IEnumerator StartDelay()
+    {
+        yield return new WaitForSeconds(3);
+        Manager.Instance.StartNextTurn();
     }
 
     private void MoveToNextPhase()
@@ -103,6 +125,7 @@ public class Puck : MonoBehaviour
         {
             case TurnPhase.Start:
                 StartDirecting();
+                owner.CanSelectPuck = false;
                 break;
 
             case TurnPhase.Directing:
