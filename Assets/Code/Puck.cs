@@ -8,7 +8,6 @@ public class Puck : MonoBehaviour
 
     [SerializeField] private GameObject selectorCircle;
     [SerializeField] private DirectorArrow directorArrow;
-    [SerializeField] private GameObject powerMeter;
 
     private bool isSelected = false;
 
@@ -57,27 +56,23 @@ public class Puck : MonoBehaviour
         turnPhase = TurnPhase.Directing;
         selectorCircle.SetActive(false);
         directorArrow.gameObject.SetActive(true);
-        directorArrow.StartRotating(0.1f);
-    }
-
-    private void LockDirection()
-    {
-        directorArrow.StopRotating();
-        transform.up = directorArrow.GetDirection();
+        directorArrow.Rotate(0.1f);
     }
 
     private void StartPowering()
     {
+        directorArrow.StopRotating();
         turnPhase = TurnPhase.Powering;
-        LockDirection();
-        powerMeter.SetActive(true);
+        transform.rotation = directorArrow.transform.rotation;
+        directorArrow.transform.rotation = transform.rotation;
+        directorArrow.StartPowering();
     }
 
     private void Shoot()
     {
+        directorArrow.StopPowering();
         turnPhase = TurnPhase.Shooting;
-        powerMeter.SetActive(false);
-        rigidbody.AddForce(transform.up);
+        rigidbody.AddForce(transform.up * directorArrow.CurrentPower, ForceMode2D.Impulse);
     }
 
     private void MoveToNextPhase()

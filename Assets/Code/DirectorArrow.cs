@@ -5,17 +5,37 @@ using UnityEngine;
 public class DirectorArrow : MonoBehaviour
 {
     private bool rotate = false;
+    private bool power = false;
+    private bool ascend = false;
 
     private float rotationSpeed;
+    private float minimumSize = 0.5f;
+    private float maximumSize = 1;
+    private float time = 0;
+
+    private Vector3 originalSize;
+
+    public float CurrentPower = 2;
+
+    private void Start()
+    {
+        originalSize = transform.localScale;
+    }
 
     private void Update()
     {
-        if (!rotate) return;
+        if (rotate)
+            transform.rotation *= Quaternion.Euler(0, 0, rotationSpeed);
 
-        transform.rotation *= Quaternion.Euler(0, 0, rotationSpeed);
+        if (power)
+        {
+            time += Time.deltaTime;
+            float sinValue = Mathf.Sin(time);
+        }
+
     }
 
-    public void StartRotating(float speed)
+    public void Rotate(float speed)
     {
         rotate = true;
         rotationSpeed = speed;
@@ -26,8 +46,13 @@ public class DirectorArrow : MonoBehaviour
         rotate = false;
     }
 
-    public Vector3 GetDirection()
+    public void StartPowering()
+    { 
+        power = true;
+    }
+
+    public void StopPowering()
     {
-        return transform.up;
+        power = false;
     }
 }
