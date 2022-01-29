@@ -7,13 +7,16 @@ public class DirectorArrow : MonoBehaviour
     private bool rotate = false;
     private bool power = false;
     private bool ascend = false;
+    private bool holdRotation = false;
 
     private float rotationSpeed;
     private float minimumSize = 0.5f;
     private float maximumSize = 1;
     private float time = 0;
 
-    public float CurrentPower = 2;
+    private Quaternion rotationToHold;
+
+    public float CurrentPower = 3;
 
     private void Update()
     {
@@ -24,11 +27,29 @@ public class DirectorArrow : MonoBehaviour
         {
             time += Time.deltaTime;
             float sinValue = (Mathf.Sin(time) + 2) / 2;
-            CurrentPower = sinValue * 2;
+            CurrentPower = sinValue * 4;
 
             transform.localScale = Vector3.one * sinValue;
         }
 
+        if (holdRotation)
+            transform.rotation = rotationToHold;
+    }
+
+    public void ResetArrow()
+    {
+        transform.rotation = Quaternion.identity;
+        rotate = false;
+        power = false;
+        ascend = false;
+        holdRotation = false;
+    }
+
+    public void HoldRotation()
+    {
+        rotationToHold = transform.rotation;
+
+        holdRotation = true;
     }
 
     public void Rotate(float speed)

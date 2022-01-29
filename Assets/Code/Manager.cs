@@ -43,13 +43,39 @@ public class Manager : MonoSingleton<Manager>
         time += Time.deltaTime;
 
         if (ReferenceEquals(map, null)) return;
-
+                
+        //Logic
         mapRender.sprite = map.GetSprite();
-        lightRenderer.rotation = Quaternion.Euler(0, Mathf.Sin(time) * 20, 0);
-
+        
         player1.Draw();
         player2.Draw(); 
+        
+        //Select
+        foreach (Puck item in player2.GetPucks())
+        {
+            map.Pain(item.GetPosition(), item.GetSize(), 1);
+        }
 
+
+        if (State == GameState.Player1Turn || State == GameState.Player2Turn)
+        {
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                if (State == GameState.Player1Turn) player1.SelectPuck(false);
+
+                else player2.SelectPuck(false);
+            }
+
+            if (Input.GetKeyDown(KeyCode.D))
+            {
+                if (State == GameState.Player1Turn) player1.SelectPuck(true);
+
+                else player2.SelectPuck(true);
+            }
+        }
+        
+        //Effects
+        lightRenderer.rotation = Quaternion.Euler(0, Mathf.Sin(time) * 20, 0);
     }
 
     #endregion
