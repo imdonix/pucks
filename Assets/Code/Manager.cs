@@ -6,8 +6,14 @@ public enum GameState { Start, Player1Turn, Player2Turn, End }
 
 public class Manager : MonoSingleton<Manager>
 {
+
+    [SerializeField] public Puck PuckPref;
+
     // World has a 1x1 size
-    [SerializeField] private Player player1, player2;
+    private Player player1;
+    private Player player2;
+
+    private Map map;
 
     #region Properties
 
@@ -15,10 +21,44 @@ public class Manager : MonoSingleton<Manager>
 
     #endregion
 
+    #region UNITY
+
     private void Start()
     {
+        GameStart();
+    }
+
+    private void Update()
+    {
+        if (ReferenceEquals(map, null)) return;
+
+        foreach (Puck item in player1.GetPucks())
+        {
+            map.Pain(item.GetPosition(), item.GetSize(), 0);
+        }
+
+        foreach (Puck item in player2.GetPucks())
+        {
+            map.Pain(item.GetPosition(), item.GetSize(), 1);
+        }
+    }
+
+    #endregion
+
+    private void GameStart()
+    {
+        player1 = new Player(0);
+        player2 = new Player(1);
+        map = new Map(Color.black, Color.white);
+
         StartNextTurn();
     }
+
+    public Map GetMap()
+    {
+        return map;
+    }
+
 
     public void StartNextTurn()
     {
