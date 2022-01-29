@@ -30,7 +30,12 @@ public class DirectorArrow : MonoBehaviour
         if (power)
         {
             time += Time.deltaTime;
-            float sinValue = Mathf.Sin(time);
+            float sinValue = (Mathf.Sin(time) + 2) / 2;
+            CurrentPower = sinValue * 2;
+
+            transform.localScale = Vector3.one * sinValue;
+
+
         }
 
     }
