@@ -5,7 +5,7 @@ public abstract class MonoSingleton<T> : MonoBehaviour
 {
     public static T Instance { private set; get; }
 
-    private void Awake()
+    public virtual void Awake()
     {
         if (ReferenceEquals(Instance, null))
         {

@@ -378,6 +378,7 @@ GameObject:
   m_Component:
   - component: {fileID: 585602791}
   - component: {fileID: 585602790}
+  - component: {fileID: 585602793}
   - component: {fileID: 585602792}
   m_Layer: 0
   m_Name: Map
@@ -471,6 +472,18 @@ MonoBehaviour:
   lightRenderer: {fileID: 1029273847}
   topRenderer: {fileID: 250233228}
   botRenderer: {fileID: 875319690}
+--- !u!114 &585602793
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 585602789}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff7934d51eaebeb48b053c2e9a6ef6eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &674010909
 GameObject:
   m_ObjectHideFlags: 0
