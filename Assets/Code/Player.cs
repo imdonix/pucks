@@ -93,7 +93,7 @@ public class Player
                         over.transform.position = new Vector2(
                             (grid.x - Map.SIZE / 2) / 5,
                             (grid.y - Map.SIZE / 2) / 5);
-                        over.SetColor(map.GetColor(type));
+                        over.SetColor(map.GetColor(type == 1 ? 0 : 1));
                     }
                 }
 

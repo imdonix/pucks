@@ -1,114 +1,69 @@
 // Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
 
-/*
-	Basic Sprite Shader for aligning pixel art to the same grid, based on the Unity Sprite Shader.
-	Create one Material where you assign the same Pixels Per Unit value you use on your imported Sprites,
-	then reuse this Material on all appropriate Sprite Renderers.
-	(You can use Shader.SetGlobalFloat to set that Pixels Per Unit value for all your shaders:
-	https://docs.unity3d.com/ScriptReference/Shader.SetGlobalFloat.html)
-
-	This is not for scaled or rotated artwork. If you need those features, look at low res render textures.
-
-	Use this however you want.
-
-	@talecrafter
-*/
-
-Shader "Sprites/PixelArt"
+Shader "Custom/PixelArt"
 {
-	Properties
-	{
-		[PerRendererData] _MainTex ("Sprite Texture", 2D) = "white" {}
-		_Color ("Tint", Color) = (1,1,1,1)
-		_pixelsPerUnit("Pixels Per Unit", Float) = 16
-	}
+  Properties
+  {
+    _MainTex("Texture", 2D) = "" {}
+  }
 
-	SubShader
-	{
-		Tags
-		{ 
-			"Queue"="Transparent" 
-			"IgnoreProjector"="True" 
-			"RenderType"="Transparent" 
-			"PreviewType"="Plane"
-			"CanUseSpriteAtlas"="True"
-		}
+  SubShader
+  {
+    Tags
+    {
+      "Queue" = "Transparent"
+      "IgnoreProjector" = "True"
+      "RenderType" = "Transparent"
+    }
 
-		Cull Off
-		Lighting Off
-		ZWrite Off
-		Blend One OneMinusSrcAlpha
+    ZWrite Off
+    Blend SrcAlpha OneMinusSrcAlpha
 
-		Pass
-		{
-		CGPROGRAM
-			#pragma vertex vert
-			#pragma fragment frag			
-			#pragma multi_compile _ UNITY_ETC1_EXTERNAL_ALPHA
+    Pass
+    {
+      CGPROGRAM
+      #pragma vertex vertexShader
+      #pragma fragment fragmentShader
 
-			#include "UnityCG.cginc"
+      sampler2D _MainTex;
+      float4 _MainTex_TexelSize;
+      float texelsPerPixel;
 
-			struct appdata_t
-			{
-				float4 vertex   : POSITION;
-				float4 color    : COLOR;
-				float2 texcoord : TEXCOORD0;
-			};
+      struct vertexInput
+      {
+        float4 vertex : POSITION;
+        fixed4 color : COLOR;
+        float2 textureCoords : TEXCOORD0;
+      };
 
-			struct v2f
-			{
-				float4 vertex   : SV_POSITION;
-				fixed4 color : COLOR;
-				float2 texcoord  : TEXCOORD0;
-			};			
-			
-			fixed4 _Color;
-			float _pixelsPerUnit;
+      struct vertexOutput
+      {
+        float4 vertex : SV_POSITION;
+        fixed4 color : COLOR;
+        float2 textureCoords : TEXCOORD0;
+      };
 
-			float4 AlignToPixelGrid(float4 vertex)
-			{
-				float4 worldPos = mul(unity_ObjectToWorld, vertex);
+      vertexOutput vertexShader(vertexInput input)
+      {
+        vertexOutput output;
+        output.vertex = UnityObjectToClipPos(input.vertex);
+        output.textureCoords = input.textureCoords * _MainTex_TexelSize.zw;
+        output.color = input.color;
+        return output;
+      }
 
-				worldPos.x = floor(worldPos.x * _pixelsPerUnit + 0.5) / _pixelsPerUnit;
-				worldPos.y = floor(worldPos.y * _pixelsPerUnit + 0.5) / _pixelsPerUnit;
+      fixed4 fragmentShader(vertexOutput input) : SV_Target
+      {
+        float2 locationWithinTexel = frac(input.textureCoords);
+        float2 interpolationAmount = clamp(locationWithinTexel / texelsPerPixel,
+          0, .5) + clamp((locationWithinTexel - 1) / texelsPerPixel + .5, 0,
+          .5);
+        float2 finalTextureCoords = (floor(input.textureCoords) +
+          interpolationAmount) / _MainTex_TexelSize.zw;
+        return tex2D(_MainTex, finalTextureCoords) * input.color;
+      }
 
-				return mul(unity_WorldToObject, worldPos);
-			}
-
-			v2f vert(appdata_t IN)
-			{
-				float4 alignedPos = AlignToPixelGrid(IN.vertex);
-
-				v2f OUT;
-				OUT.vertex = UnityObjectToClipPos(alignedPos);
-				OUT.texcoord = IN.texcoord;
-				OUT.color = IN.color * _Color;
-
-				return OUT;
-			}
-
-			sampler2D _MainTex;
-			sampler2D _AlphaTex;
-
-			fixed4 SampleSpriteTexture(float2 uv)
-			{
-				fixed4 color = tex2D(_MainTex, uv);
-
-				#if ETC1_EXTERNAL_ALPHA
-				color.a = tex2D(_AlphaTex, uv).r;
-				#endif
-
-				return color;
-			}
-
-			fixed4 frag(v2f IN) : SV_Target
-			{
-				fixed4 c = SampleSpriteTexture (IN.texcoord) * IN.color;
-				c.rgb *= c.a;
-
-				return c;
-			}
-		ENDCG
-		}
-	}
+      ENDCG
+    }
+  }
 }
