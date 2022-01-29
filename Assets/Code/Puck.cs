@@ -11,6 +11,7 @@ public class Puck : MonoBehaviour
 
     [SerializeField] private GameObject selectorCircle;
     [SerializeField] private DirectorArrow directorArrow;
+    [SerializeField] private GameObject queenIcon;
 
     private bool isSelected = false;
 
@@ -78,6 +79,7 @@ public class Puck : MonoBehaviour
         rendered.color = Manager.Instance.GetMap().GetColor(player.Type());
         this.radius = radius;
         this.queen = queen;
+        queenIcon.SetActive(queen);
     }
 
     #endregion
