@@ -96,13 +96,13 @@ public class Manager : MonoSingleton<Manager>
     {
         if (!player1.IsAlive())
         {
-            Debug.Log("Player 2 win");
+            Endgame.Instance.Show(player2.Type());
             state = GameState.End;
         }
 
         else if (!player2.IsAlive())
         {
-            Debug.Log("Player 1 win");
+            Endgame.Instance.Show(player1.Type());
             state = GameState.End;
         }
     }
@@ -207,7 +207,7 @@ public class Manager : MonoSingleton<Manager>
         }
         else if (state == GameState.End)
         {
-            SceneManager.LoadScene("Menu");
+            
         }
     }
 }

@@ -26,13 +26,13 @@ public class Player
         Puck one = GameObject.Instantiate(Manager.Instance.PuckPref);
         one.transform.position = new Vector3(-7, y, 0);
         one.transform.localScale = Vector3.one * 2;
-        one.Set(this, false, 5);
+        one.Set(this, false, 5.5F);
         pucks.Add(one);
 
         Puck two = GameObject.Instantiate(Manager.Instance.PuckPref);
         two.transform.position = new Vector3(7, y, 0);
         two.transform.localScale = Vector3.one * 2;
-        two.Set(this, false, 5);
+        two.Set(this, false, 5.5F);
         
         pucks.Add(two);
     }

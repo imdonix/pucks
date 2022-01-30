@@ -77,7 +77,7 @@ public class Puck : MonoBehaviour
         directorArrow.ResetArrow();
     }
 
-    public void Set(Player player, bool queen, int radius)
+    public void Set(Player player, bool queen, float radius)
     {
         this.owner = player;
         this.rendered.color = Manager.Instance.GetMap().GetColor(player.Type());
