@@ -68,7 +68,7 @@ public class Manager : MonoSingleton<Manager>
             }
         }
 
-        if (state == GameState.Player2Turn)
+        if (state == GameState.Player2Turn && !player2.IsAI())
         {
             if (Input.GetKeyDown(KeyCode.A))
             {
@@ -113,8 +113,8 @@ public class Manager : MonoSingleton<Manager>
         topRenderer.material.color = colors.Item1;
         botRenderer.material.color = colors.Item2;
         map = new Map(colors.Item1, colors.Item2, colors.Item3);
-        player1 = new Player(map, 0);
-        player2 = new Player(map, 1);
+        player1 = new Player(map, 0, false);
+        player2 = new Player(map, 1, true);
 
         for (int i = 0; i < UnityEngine.Random.Range(2,5); i++)
         {
@@ -198,7 +198,14 @@ public class Manager : MonoSingleton<Manager>
         if (state == GameState.Player1Turn)
         {
             state = GameState.Player2Turn;
-            player2.SelectPuck(0);
+            if (player2.IsAI())
+            {
+                StartCoroutine(DoAITurn()); 
+            }
+            else
+            {
+                player2.SelectPuck(0);
+            }
         }
         else if (state == GameState.Player2Turn)
         {
@@ -209,5 +216,22 @@ public class Manager : MonoSingleton<Manager>
         {
             
         }
+    }
+
+    private IEnumerator DoAITurn()
+    {
+        player2.SelectPuck(0);
+        for (int i = 0; i < UnityEngine.Random.Range(0,3); i++)
+        {
+            player2.SelectPuck(1);
+            yield return new WaitForSeconds(1);
+        }
+
+        while (state == GameState.Player2Turn)
+        {
+            player2.GetSelected().MoveToNextPhase();
+            yield return new WaitForSeconds(UnityEngine.Random.Range(0, 2F));
+        }
+
     }
 }

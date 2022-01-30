@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,10 +8,12 @@ public class Player
     private int selectedPuckIndex = 0;
     private Map map;
     private int type;
+    private bool ai;
     private List<Puck> pucks;
 
-    public Player(Map map, int type)
+    public Player(Map map, int type, bool ai)
     {
+        this.ai = ai;
         this.map = map;
         this.type = type;
         this.pucks = new List<Puck>();
@@ -112,5 +115,10 @@ public class Player
     public int Type()
     {
         return type;
+    }
+
+    public bool IsAI()
+    {
+        return ai;
     }
 }

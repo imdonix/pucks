@@ -7,9 +7,6 @@ public abstract class MonoSingleton<T> : MonoBehaviour
 
     public virtual void Awake()
     {
-        if (ReferenceEquals(Instance, null))
-        {
-            MonoSingleton<T>.Instance = gameObject.GetComponent<T>();
-        }
+        MonoSingleton<T>.Instance = gameObject.GetComponent<T>();
     }
 }
