@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class PlayButton : MonoBehaviour
 {
+    [SerializeField] private AudioSource clickSoundSource;
+
     public void PlayPVP()
     {
         Settings.PVP = true;
@@ -20,6 +22,7 @@ public class PlayButton : MonoBehaviour
 
     private void Play()
     {
+        clickSoundSource.Play();
         SceneManager.LoadScene("Main");
     }
 }
