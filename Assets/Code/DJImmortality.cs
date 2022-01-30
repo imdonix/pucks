@@ -5,21 +5,18 @@ using UnityEngine.SceneManagement;
 
 public class DJImmortality : MonoBehaviour
 {
-    public static DJImmortality Instance;
+    public static DJImmortality Instance = null;
 
     private void Awake()
     {
-        SceneManager.sceneLoaded += OnSceneLoaded;
-
-        DontDestroyOnLoad(this);
-    }
-
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        if (Instance != null && Instance != this)
-            Destroy(gameObject);
-
-        else
+        if (Instance == null)
+        {
             Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else if (Instance != this)
+        {
+            Destroy(gameObject);
+        }
     }
 }
