@@ -5,7 +5,12 @@ using UnityEngine.SceneManagement;
 
 public class PlayButton : MonoBehaviour
 {
-    public void Play()
+    public void PlayPVP()
+    {
+        SceneManager.LoadScene("Main");
+    }
+
+    public void PlayPVC()
     {
         SceneManager.LoadScene("Main");
     }

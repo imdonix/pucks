@@ -114,7 +114,7 @@ public class Manager : MonoSingleton<Manager>
         botRenderer.material.color = colors.Item2;
         map = new Map(colors.Item1, colors.Item2, colors.Item3);
         player1 = new Player(map, 0, false);
-        player2 = new Player(map, 1, true);
+        player2 = new Player(map, 1, !Settings.PVP);
 
         for (int i = 0; i < UnityEngine.Random.Range(2,5); i++)
         {

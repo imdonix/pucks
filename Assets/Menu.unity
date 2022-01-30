@@ -355,7 +355,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 416558938}
         m_TargetAssemblyTypeName: PlayButton, Assembly-CSharp
-        m_MethodName: Play
+        m_MethodName: PlayPVC
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -944,7 +944,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1612271225}
         m_TargetAssemblyTypeName: PlayButton, Assembly-CSharp
-        m_MethodName: Play
+        m_MethodName: PlayPVP
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
