@@ -83,7 +83,6 @@ public class Player
                         over.SetColor(map.GetColor(type));
                     }
                 }
-                TimeControl.Instance.SetTimeFor(0.5F, 2);
 
                 dead.Add(item);
             }
