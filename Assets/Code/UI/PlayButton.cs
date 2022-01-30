@@ -7,10 +7,18 @@ public class PlayButton : MonoBehaviour
 {
     public void PlayPVP()
     {
-        SceneManager.LoadScene("Main");
+        Settings.PVP = true;
+        Play();
     }
 
     public void PlayPVC()
+    {
+        Settings.PVP = false;
+        Play();
+    }
+
+
+    private void Play()
     {
         SceneManager.LoadScene("Main");
     }
