@@ -16,6 +16,9 @@ public class Manager : MonoSingleton<Manager>
     [SerializeField] private SpriteRenderer topRenderer;
     [SerializeField] private SpriteRenderer botRenderer;
 
+    [SerializeField] private PlayerDisplay left;
+    [SerializeField] private PlayerDisplay right;
+
     private SpriteRenderer mapRender;
 
     // World has a 1x1 size
@@ -113,8 +116,12 @@ public class Manager : MonoSingleton<Manager>
         topRenderer.material.color = colors.Item1;
         botRenderer.material.color = colors.Item2;
         map = new Map(colors.Item1, colors.Item2, colors.Item3);
+
         player1 = new Player(map, 0, false);
         player2 = new Player(map, 1, !Settings.PVP);
+
+        left.Set(true, "Player One", colors.Item1, KeyCode.LeftArrow, KeyCode.UpArrow, KeyCode.RightArrow);
+        right.Set(Settings.PVP, Settings.PVP ? "Player Two" : "Computer", colors.Item2, KeyCode.A, KeyCode.W, KeyCode.D);
 
         for (int i = 0; i < UnityEngine.Random.Range(2,5); i++)
         {
