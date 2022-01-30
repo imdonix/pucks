@@ -9,11 +9,14 @@ public abstract class Effect : MonoBehaviour
     protected Map map;
     protected TimeControl control;
 
+    private AudioSource aSource;
+
     #region UNITY
 
     private void Awake()
     {
         GetComponent<Rigidbody2D>().isKinematic = true;
+        aSource = GameObject.Find("DJJunior2").GetComponent<AudioSource>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -23,6 +26,10 @@ public abstract class Effect : MonoBehaviour
         {
             if (!ReferenceEquals(null, puck.GetPlayer()))
             {
+                if (aSource.isPlaying)
+                    aSource.Stop();
+
+                aSource.Play();
                 Play(puck.GetPlayer().Type());
             }
         }

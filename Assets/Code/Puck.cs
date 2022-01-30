@@ -22,6 +22,8 @@ public class Puck : MonoBehaviour
     private float radius;
     private bool queen;
 
+    private AudioSource audioSource;
+
     private Player owner;
 
     #region Properties
@@ -34,6 +36,12 @@ public class Puck : MonoBehaviour
     {
         rigidbody = GetComponent<Rigidbody2D>();
         rendered = GetComponent<SpriteRenderer>();
+        
+    }
+
+    private void Start()
+    {
+        audioSource = GameObject.Find("DJJunior").GetComponent<AudioSource>();
     }
 
     public Vector2 GetPosition()
@@ -57,6 +65,14 @@ public class Puck : MonoBehaviour
 
         if (rigidbody.velocity.magnitude < 0.1f)
             rigidbody.velocity = Vector2.zero;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (audioSource.isPlaying)
+            audioSource.Stop();
+
+        audioSource.Play();
     }
 
     #region Public methods
